@@ -4,6 +4,7 @@ import time
 
 high_score = None
 user_guesses = []
+scores = []
 
 
 def game_welcome():
@@ -18,14 +19,14 @@ def game_welcome():
 
 
 def create_number():
-    return random.randint(1, 5)
+    return random.randint(1, 100)
 
 
 def user_guess(winning_number):
     false_guess = True
     while false_guess:
         try:
-            user_guess = int(input("Guess a number from 1-5(testing):  "))
+            user_guess = int(input("Guess a number from 1-100:  "))
         except ValueError:
             print("Please enter a whole number.")
         else:
@@ -41,17 +42,19 @@ def user_guess(winning_number):
                 false_guess = False
                 print(f"You guessed the correct number it was {winning_number}")
                 user_guesses.append(user_guess)
+    scores.append(len(user_guesses))
+    print(scores)
 
 
 def set_highscore(high_score):
     if high_score == None:
         print(f"Congrats you scored a {len(user_guesses)}, it is now the highscore. Try and beat it!")
         return len(user_guesses)
-    elif high_score < len(user_guesses):
+    elif high_score > len(user_guesses):
         print(f"Congrats you have the new highscore of {len(user_guesses)}")
         return len(user_guesses)
     elif high_score == len(user_guesses):
-        print(f"You scored {high_score} and tied the highscore. Try again to beat it! ")
+        print(f"You scored {len(user_guesses)} and tied the highscore. Try again to beat it! ")
         return high_score
     else:
         print(f"Your score of {len(user_guesses)} did not beat the highscore of {high_score}. Try again!")
@@ -59,10 +62,10 @@ def set_highscore(high_score):
 
 
 def view_data():
-    game_guess_count = len(user_guesses)
-    game_mean = statistics.mean(user_guesses)
-    game_median = statistics.median(user_guesses)
-    game_mode = statistics.mode(user_guesses)
+    game_guess_count = len(scores)
+    game_mean = statistics.mean(scores)
+    game_median = statistics.median(scores)
+    game_mode = statistics.mode(scores)
     
     print(f'Guesses Count: {game_guess_count}\nMean: {game_mean}\nMedian: {game_median}\nMode: {game_mode}')
 
@@ -74,6 +77,8 @@ def play_again():
         user_input = input("Would you like to play again?[Y/N]  ")
         if user_input[0].upper() == "Y":
             error_check = False
+            global user_guesses
+            user_guesses = []
             start_game()
         elif user_input[0].upper() == "N":
             error_check = False
@@ -87,7 +92,8 @@ def start_game():
     winning_number = create_number()
     user_guess(winning_number)
     time.sleep(1)
-    set_highscore(high_score)
+    global high_score
+    high_score = set_highscore(high_score)
     time.sleep(1)
     view_data()
     play_again()
