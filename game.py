@@ -81,6 +81,7 @@ def play_again():
             user_guesses = []
             start_game()
         elif user_input[0].upper() == "N":
+            print("Thank you for playing.")
             error_check = False
             exit()
         else:
