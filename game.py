@@ -43,7 +43,6 @@ def user_guess(winning_number):
                 print(f"You guessed the correct number it was {winning_number}")
                 user_guesses.append(user_guess)
     scores.append(len(user_guesses))
-    print(scores)
 
 
 def set_highscore(high_score):
